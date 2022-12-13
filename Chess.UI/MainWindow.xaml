@@ -3,10 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Chess.UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="300" Width="500">
-    <Grid>
-
+        Title="Chess" Height="500" Width="600" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+    <Grid x:Name="BoardGrid" ShowGridLines="False" Background="Wheat" HorizontalAlignment="Center" VerticalAlignment="Center">
     </Grid>
 </Window>
