@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Chess.Engine
+﻿namespace Chess.Engine
 {
-    public class Piece
+    public abstract class Piece
     {
+        public Color Color { get; set; }
+
+        public abstract bool CanMove { get; set; }
+
+        public abstract bool CanBeCaptured { get; set; }
+
+        public abstract void Move();
+
+        public abstract void GetValidMoves();
     }
 }

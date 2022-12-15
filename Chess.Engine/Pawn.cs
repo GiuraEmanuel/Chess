@@ -1,12 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Chess.Engine
+﻿namespace Chess.Engine
 {
-    public class Pawn
+    public class Pawn : Piece
     {
+        public override bool CanMove { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public override bool CanBeCaptured { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public override void GetValidMoves()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Move()
+        {
+
+        }
     }
 }
