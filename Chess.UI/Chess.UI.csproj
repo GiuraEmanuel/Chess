@@ -8,7 +8,41 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\b-bishop.png" />
+    <None Remove="Images\b-king.png" />
+    <None Remove="Images\b-knight.png" />
+    <None Remove="Images\b-pawn.png" />
+    <None Remove="Images\b-queen.png" />
+    <None Remove="Images\b-rook.png" />
+    <None Remove="Images\dark-brown-square.png" />
+    <None Remove="Images\light-brown-square.png" />
+    <None Remove="Images\w-bishop.png" />
+    <None Remove="Images\w-king.png" />
+    <None Remove="Images\w-knight.png" />
+    <None Remove="Images\w-pawn.png" />
+    <None Remove="Images\w-queen.png" />
+    <None Remove="Images\w-rook.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Chess.Engine\Chess.Engine.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\b-bishop.png" />
+    <Resource Include="Images\b-king.png" />
+    <Resource Include="Images\b-knight.png" />
+    <Resource Include="Images\b-pawn.png" />
+    <Resource Include="Images\b-queen.png" />
+    <Resource Include="Images\b-rook.png" />
+    <Resource Include="Images\dark-brown-square.png" />
+    <Resource Include="Images\light-brown-square.png" />
+    <Resource Include="Images\w-bishop.png" />
+    <Resource Include="Images\w-king.png" />
+    <Resource Include="Images\w-knight.png" />
+    <Resource Include="Images\w-pawn.png" />
+    <Resource Include="Images\w-queen.png" />
+    <Resource Include="Images\w-rook.png" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
 ﻿using Chess.Engine;
+using Chess.UI.Controls;
 using System;
 using System.Drawing;
 using System.Reflection;
@@ -18,10 +19,14 @@ namespace Chess.UI
         public MainWindow()
         {
             InitializeComponent();
-            DrawChessBoard();
+            InitChessBoard();
+            UpdateChessBoard();
         }
 
-        public void DrawChessBoard()
+        private Board _board = new Board();
+        BoardPosition[,] _boardPositions = new BoardPosition[8,8];
+
+        public void InitChessBoard()
         {
             int totalRows = 8;
             int totalColumns = 8;
@@ -33,25 +38,41 @@ namespace Chess.UI
 
                 for (int column = 0; column < totalColumns; column++)
                 {
-                    var border = new Border
+                    var boardPosition = new BoardPosition
                     {
                         Height = 50,
                         Width = 50,
                         BorderThickness = new Thickness(1, 1, 1, 1),
-                         
                     };
-                    BoardGrid.Children.Add(border);
-                    Grid.SetColumn(border, column);
-                    Grid.SetRow(border, row);
+
+                    _boardPositions[row, column] = boardPosition;
+
+                    BoardGrid.Children.Add(boardPosition);
+                    Grid.SetColumn(boardPosition, column);
+                    Grid.SetRow(boardPosition, row);
 
                     if ((row + column) % 2 == 0)
                     {
-                        border.Background = Brushes.White;
+                        boardPosition.Background = Brushes.Wheat;
                     }
                     else
                     {
-                        border.Background = Brushes.Black;
+                        boardPosition.Background = Brushes.Black;
                     }
+                }
+            }
+        }
+
+        public void UpdateChessBoard()
+        {
+            int totalRows = 8;
+            int totalColumns = 8;
+
+            for (int row = 0; row < totalRows; row++)
+            {
+                for (int column = 0; column < totalColumns; column++)
+                {
+                    _boardPositions[row, column].Piece = _board.GetPieceAt(row, column);
                 }
             }
         }
