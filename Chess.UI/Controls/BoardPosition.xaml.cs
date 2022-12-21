@@ -1,7 +1,10 @@
 ﻿using Chess.Engine;
 using System;
+using System.Diagnostics.Eventing.Reader;
 using System.Net.Http.Headers;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace Chess.UI.Controls
@@ -17,6 +20,8 @@ namespace Chess.UI.Controls
         }
 
         private Piece? _piece;
+
+        private bool _isHighlighted;
 
         public Piece? Piece
         {
@@ -37,5 +42,24 @@ namespace Chess.UI.Controls
             }
         }
 
+        public bool IsHighlighted
+        {
+            get => _isHighlighted;
+            set
+            {
+                _isHighlighted = value;
+
+                if (_isHighlighted)
+                {
+                    BorderBrush = Brushes.Red;
+                    BorderThickness = new Thickness(3, 3, 3, 3);
+                }
+                else
+                {
+                    BorderBrush = null;
+                    BorderThickness = new Thickness(0, 0, 0, 0);
+                }    
+            }
+        }
     }
 }

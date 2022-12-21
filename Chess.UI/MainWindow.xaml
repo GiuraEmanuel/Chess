@@ -5,6 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Chess" Height="500" Width="600" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
-    <Grid x:Name="BoardGrid" ShowGridLines="False" Background="Wheat" HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Grid>
+        <Grid x:Name="BoardGrid" ShowGridLines="False" Background="Wheat" HorizontalAlignment="Center" VerticalAlignment="Center">
+        </Grid>
+        <TextBlock x:Name="CurrentPlayer" VerticalAlignment="Bottom" Text="Current player: White"></TextBlock>
     </Grid>
 </Window>

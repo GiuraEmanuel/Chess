@@ -2,7 +2,7 @@
 {
     public abstract class Piece
     {
-        public Color Color { get; set; }
+        public PlayerColor Color { get; set; }
 
         public abstract bool CanMove { get; set; }
 
