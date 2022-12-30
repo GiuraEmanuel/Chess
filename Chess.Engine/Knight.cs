@@ -2,19 +2,20 @@
 {
     public class Knight : Piece
     {
-
-        public override bool CanMove { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public override bool CanBeCaptured { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public override void GetValidMoves()
+        public override List<ValidMove> GetValidMoves(int row, int column, Board board)
         {
-            throw new NotImplementedException();
-        }
+            var validMoves = new List<ValidMove>();
 
-        public override void Move()
-        {
-            throw new NotImplementedException();
+            AddMove(row, column, -2, 1, validMoves, board); // up: 2 rows, right 1 column
+            AddMove(row, column, -2, -1, validMoves, board); // up: 2 rows, left 1 column
+            AddMove(row, column, 2, 1, validMoves, board); // down: 2 rows, right 1 column
+            AddMove(row, column, 2, -1, validMoves, board); // down: 2 rows, left 1 column
+            AddMove(row, column, -1, 2, validMoves, board); // right: 1 row up, right 2 columns 
+            AddMove(row, column, 1, 2, validMoves, board); // right: 1 row down,right 2 columns
+            AddMove(row, column, -1, -2, validMoves, board); // left: 1 row up, left 2 columns 
+            AddMove(row, column, 1, -2, validMoves, board); // left: 1 row down, left 2 columns
+
+            return validMoves;
         }
     }
 }

@@ -1,16 +1,10 @@
 ﻿using Chess.Engine;
 using Chess.UI.Controls;
-using System;
-using System.Data.Common;
-using System.Drawing;
-using System.Reflection;
-using System.Runtime.CompilerServices;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using Color = System.Windows.Media.Color;
-using Size = System.Drawing.Size;
 
 namespace Chess.UI
 {
@@ -45,12 +39,7 @@ namespace Chess.UI
 
                 for (int column = 0; column < totalColumns; column++)
                 {
-                    var boardPosition = new BoardPosition
-                    {
-                        Height = 50,
-                        Width = 50,
-                        BorderThickness = new Thickness(1, 1, 1, 1),
-                    };
+                    var boardPosition = new BoardPosition();
 
                     boardPosition.MouseLeftButtonDown += BoardPosition_MouseLeftButtonDown;
 
@@ -84,8 +73,9 @@ namespace Chess.UI
                     // Only allow selecting a piece that is your own color
                     return;
                 }
+
                 _selectedPosition = clickedPosition;
-                clickedPosition.IsHighlighted = true;
+                _selectedPosition.IsHighlighted = true;
             }
             else if (_selectedPosition == clickedPosition)
             {
@@ -100,17 +90,33 @@ namespace Chess.UI
                 {
                     // an empty position or opponent's piece was clicked
 
-                    // TODO: Move the piece
+                    var fromRow = Grid.GetRow(_selectedPosition);
+                    var fromColumn = Grid.GetColumn(_selectedPosition);
+
+                    var toRow = Grid.GetRow(clickedPosition);
+                    var toColumn = Grid.GetColumn(clickedPosition);
+
+                    var validMoves = _board.GetValidMoves(fromRow, fromColumn, _board);
+
+                    if (!validMoves.Any(vm => vm.Row == toRow && vm.Column == toColumn))
+                    {
+                        return;
+                    }
+
+                    _board.Move(fromRow, fromColumn, toRow, toColumn);
+
+
                     _selectedPosition.IsHighlighted = false;
                     _selectedPosition = null;
                     UpdateChessBoard();
+
                     if (_playerColor == PlayerColor.White)
                     {
                         _playerColor = PlayerColor.Black;
                     }
                     else
                     {
-                        _playerColor= PlayerColor.White;
+                        _playerColor = PlayerColor.White;
                     }
                     CurrentPlayer.Text = $"Current player: {_playerColor}";
                 }
@@ -120,12 +126,36 @@ namespace Chess.UI
                     _selectedPosition.IsHighlighted = false;
                     _selectedPosition = clickedPosition;
                     _selectedPosition.IsHighlighted = true;
+                }
+            }
 
+            UpdateHighlights();
+        }
+
+        private void UpdateHighlights()
+        {
+            foreach (var boardPosition in _boardPositions)
+            {
+                boardPosition.IsHighlighted = false;
+            }
+
+            if (_selectedPosition != null)
+            {
+                _selectedPosition.IsHighlighted = true;
+
+                var fromRow = Grid.GetRow(_selectedPosition);
+                var fromColumn = Grid.GetColumn(_selectedPosition);
+
+                var validMoves = _board.GetValidMoves(fromRow, fromColumn, _board);
+
+                foreach (var vm in validMoves)
+                {
+                    _boardPositions[vm.Row, vm.Column].IsHighlighted = true;
                 }
             }
         }
 
-        public void UpdateChessBoard()
+        private void UpdateChessBoard()
         {
             int totalRows = 8;
             int totalColumns = 8;

@@ -1,28 +1,17 @@
-﻿using Chess.Engine.Interfaces;
-
-namespace Chess.Engine
+﻿namespace Chess.Engine
 {
-    public class Rook : Piece, ICastleable
+    public class Rook : Piece
     {
-        public override bool CanMove { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public override bool CanBeCaptured { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public bool CanCastle { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public void Castle()
+        public override List<ValidMove> GetValidMoves(int row, int column, Board board)
         {
-            throw new NotImplementedException();
-        }
+            var validMoves = new List<ValidMove>();
 
-        public override void GetValidMoves()
-        {
-            throw new NotImplementedException();
-        }
+            AddAllDirectionMoves(row, column, -1, 0, validMoves, board); // up
+            AddAllDirectionMoves(row, column, 1, 0, validMoves, board); // down
+            AddAllDirectionMoves(row, column, 0, 1, validMoves, board); // right
+            AddAllDirectionMoves(row, column, 0, -1, validMoves, board); // left
 
-        public override void Move()
-        {
-            throw new NotImplementedException();
+            return validMoves;
         }
     }
 }

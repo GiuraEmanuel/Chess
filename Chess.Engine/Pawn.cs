@@ -2,18 +2,57 @@
 {
     public class Pawn : Piece
     {
-        public override bool CanMove { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public override bool CanBeCaptured { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public override void GetValidMoves()
+        public override List<ValidMove> GetValidMoves(int row, int column, Board board)
         {
-            throw new NotImplementedException();
-        }
+            var validMoves = new List<ValidMove>();
 
-        public override void Move()
-        {
+            int forward;
+            int startingRow;
 
+            if (Color == PlayerColor.White)
+            {
+                forward = -1;
+                startingRow = 6;
+            }
+            else
+            {
+                forward = 1;
+                startingRow = 1;
+            }
+
+            if (board.GetPieceAt(row + forward, column) == null)
+            {
+                validMoves.Add(new ValidMove(row + forward, column));
+
+                if (row == startingRow && board.GetPieceAt(row + forward * 2, column) == null)
+                {
+                    validMoves.Add(new ValidMove(row + forward * 2, column));
+                }
+            }
+
+            if (column < 7)
+            {
+                var rightCapturablePiece = board.GetPieceAt(row + forward, column + 1);
+
+                // captures right side
+                if (rightCapturablePiece != null && Color != rightCapturablePiece.Color)
+                {
+                    validMoves.Add(new ValidMove(row + forward, column + 1));
+                }
+            }
+
+            if (column > 0)
+            {
+                var leftCapturablePiece = board.GetPieceAt(row + forward, column - 1);
+
+                // captures left side
+                if (leftCapturablePiece != null && Color != leftCapturablePiece.Color)
+                {
+                    validMoves.Add(new ValidMove(row + forward, column - 1));
+                }
+            }
+
+            return validMoves;
         }
     }
 }

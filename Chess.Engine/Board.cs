@@ -1,5 +1,7 @@
 ﻿namespace Chess.Engine
 {
+    public record ValidMove(int Row, int Column);
+
     public class Board
     {
         private Piece?[,] _pieces = new Piece[8, 8];
@@ -8,7 +10,7 @@
         {
             // black
             _pieces[0, 0] = new Rook() { Color = PlayerColor.Black };
-            _pieces[0, 1] = new Knight() { Color= PlayerColor.Black };
+            _pieces[0, 1] = new Knight() { Color = PlayerColor.Black };
             _pieces[0, 2] = new Bishop() { Color = PlayerColor.Black };
             _pieces[0, 3] = new Queen() { Color = PlayerColor.Black };
             _pieces[0, 4] = new King() { Color = PlayerColor.Black };
@@ -18,7 +20,7 @@
 
             _pieces[1, 0] = new Pawn() { Color = PlayerColor.Black };
             _pieces[1, 1] = new Pawn() { Color = PlayerColor.Black };
-            _pieces[1, 2] = new Pawn() { Color = PlayerColor.Black }; 
+            _pieces[1, 2] = new Pawn() { Color = PlayerColor.Black };
             _pieces[1, 3] = new Pawn() { Color = PlayerColor.Black };
             _pieces[1, 4] = new Pawn() { Color = PlayerColor.Black };
             _pieces[1, 5] = new Pawn() { Color = PlayerColor.Black };
@@ -85,6 +87,24 @@
         public Piece? GetPieceAt(int row, int column)
         {
             return _pieces[row, column];
+        }
+
+        public void Move(int fromRow, int fromColumn, int toRow, int toColumn)
+        {
+            _pieces[toRow, toColumn] = _pieces[fromRow, fromColumn];
+            _pieces[fromRow, fromColumn] = null;
+        }
+
+        public List<ValidMove> GetValidMoves(int row, int column, Board board)
+        {
+            var validMoves = new List<ValidMove>();
+
+            var piece = GetPieceAt(row, column);
+
+            if (piece != null)
+                validMoves = piece.GetValidMoves(row, column, board);
+
+            return validMoves;
         }
     }
 }

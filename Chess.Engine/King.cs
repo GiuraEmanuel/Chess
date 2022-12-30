@@ -2,30 +2,22 @@
 
 namespace Chess.Engine
 {
-    public class King : Piece, ICastleable
+    public class King : Piece
     {
-
-        public override bool CanMove { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public override bool CanBeCaptured { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public bool CanCastle { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public bool canBeCheckMated { get; set; }
-
-        public void Castle()
+        public override List<ValidMove> GetValidMoves(int row, int column, Board board)
         {
-            throw new NotImplementedException();
-        }
+            var validMoves = new List<ValidMove>();
 
-        public override void GetValidMoves()
-        {
-            throw new NotImplementedException();
-        }
+            AddMove(row, column,-1, 0, validMoves, board); // up
+            AddMove(row, column,1, 0, validMoves,board); // down
+            AddMove(row, column,0, 1, validMoves,board); // right
+            AddMove(row, column,0, -1, validMoves, board); // left
+            AddMove(row, column ,- 1, 1, validMoves,board); //top right
+            AddMove(row, column, -1, -1, validMoves, board); // top left
+            AddMove(row, column, 1, 1, validMoves, board); // bottom right
+            AddMove(row, column, 1, -1, validMoves, board); // bottom left
 
-        public override void Move()
-        {
-            throw new NotImplementedException();
+            return validMoves;
         }
     }
 }

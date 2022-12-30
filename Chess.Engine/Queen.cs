@@ -2,18 +2,20 @@
 {
     public class Queen : Piece
     {
-        public override bool CanMove { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public override bool CanBeCaptured { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public override void GetValidMoves()
+        public override List<ValidMove> GetValidMoves(int row, int column, Board board)
         {
-            throw new NotImplementedException();
-        }
+            var validMoves = new List<ValidMove>();
 
-        public override void Move()
-        {
-            throw new NotImplementedException();
+            AddAllDirectionMoves(row, column, -1, 0, validMoves, board); // up
+            AddAllDirectionMoves(row, column, 1, 0, validMoves, board); // down
+            AddAllDirectionMoves(row, column, 0, 1, validMoves, board); // right
+            AddAllDirectionMoves(row, column, 0, -1, validMoves, board); // left
+            AddAllDirectionMoves(row, column, -1, 1, validMoves, board); // top right
+            AddAllDirectionMoves(row, column, -1, -1, validMoves, board); // top left
+            AddAllDirectionMoves(row, column, 1, 1, validMoves, board); // bottom right
+            AddAllDirectionMoves(row, column, 1, -1, validMoves, board); // bottom left
+
+            return validMoves;
         }
     }
 }
