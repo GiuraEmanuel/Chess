@@ -1,13 +1,13 @@
 ﻿namespace Chess.Engine
 {
-    public record ValidMove(int Row, int Column);
-
     public class Board
     {
-        private Piece?[,] _pieces = new Piece[8, 8];
+        private Piece?[,] _pieces;
 
         public Board()
         {
+            _pieces = new Piece[8, 8];
+
             // black
             _pieces[0, 0] = new Rook() { Color = PlayerColor.Black };
             _pieces[0, 1] = new Knight() { Color = PlayerColor.Black };
@@ -26,43 +26,6 @@
             _pieces[1, 5] = new Pawn() { Color = PlayerColor.Black };
             _pieces[1, 6] = new Pawn() { Color = PlayerColor.Black };
             _pieces[1, 7] = new Pawn() { Color = PlayerColor.Black };
-
-            //empty positions
-            _pieces[2, 0] = null;
-            _pieces[2, 1] = null;
-            _pieces[2, 2] = null;
-            _pieces[2, 3] = null;
-            _pieces[2, 4] = null;
-            _pieces[2, 5] = null;
-            _pieces[2, 6] = null;
-            _pieces[2, 7] = null;
-
-            _pieces[3, 0] = null;
-            _pieces[3, 1] = null;
-            _pieces[3, 2] = null;
-            _pieces[3, 3] = null;
-            _pieces[3, 4] = null;
-            _pieces[3, 5] = null;
-            _pieces[3, 6] = null;
-            _pieces[3, 7] = null;
-
-            _pieces[4, 0] = null;
-            _pieces[4, 1] = null;
-            _pieces[4, 2] = null;
-            _pieces[4, 3] = null;
-            _pieces[4, 4] = null;
-            _pieces[4, 5] = null;
-            _pieces[4, 6] = null;
-            _pieces[4, 7] = null;
-
-            _pieces[5, 0] = null;
-            _pieces[5, 1] = null;
-            _pieces[5, 2] = null;
-            _pieces[5, 3] = null;
-            _pieces[5, 4] = null;
-            _pieces[5, 5] = null;
-            _pieces[5, 6] = null;
-            _pieces[5, 7] = null;
 
             //white
             _pieces[6, 0] = new Pawn() { Color = PlayerColor.White };
@@ -84,27 +47,104 @@
             _pieces[7, 7] = new Rook() { Color = PlayerColor.White };
         }
 
+        public Board(Board sourceBoard)
+        {
+            _pieces = (Piece[,])sourceBoard._pieces.Clone();
+        }
+
         public Piece? GetPieceAt(int row, int column)
         {
             return _pieces[row, column];
         }
 
-        public void Move(int fromRow, int fromColumn, int toRow, int toColumn)
+        internal void SetPieceAt(int row, int column, Piece? piece)
         {
-            _pieces[toRow, toColumn] = _pieces[fromRow, fromColumn];
-            _pieces[fromRow, fromColumn] = null;
+            _pieces[row, column] = piece;
         }
 
-        public List<ValidMove> GetValidMoves(int row, int column, Board board)
+        public List<Move> GetValidMoves(int row, int column, Board board)
         {
-            var validMoves = new List<ValidMove>();
-
             var piece = GetPieceAt(row, column);
 
-            if (piece != null)
-                validMoves = piece.GetValidMoves(row, column, board);
+            if (piece == null)
+            {
+                throw new ArgumentException("There's no piece at the selected position.");
+            }
+
+            var validMoves = piece.GetMoves(row, column, board, false); // gets valid moves for the currently selected piece
+
+            foreach (var move in validMoves)
+            {
+                var boardCopy = new Board(this);
+
+                boardCopy.Move(row, column, move.Row, move.Column);
+
+                if (boardCopy.CanAttackPosition(piece.Color, move.Row, move.Column))
+                {
+
+                }
+            }
 
             return validMoves;
+        }
+
+        //private (int Row, int Column) FindKing(PlayerColor color)
+        //{
+        //    return 
+        //}
+
+        #region back up GetValidMoves()
+        //public List<Move> GetValidMoves(int row, int column, Board board)
+        //{
+        //    var validMoves = new List<Move>();
+
+        //    var piece = GetPieceAt(row, column);
+
+        //    if (piece != null)
+        //        validMoves = piece.GetMoves(row, column, board, false);
+
+        //    return validMoves;
+        //}
+        #endregion
+
+        public void Move(int fromRow, int fromColumn, int toRow, int toColumn)
+        {
+            var piece = _pieces[fromRow, fromColumn];
+
+            if (piece == null)
+            {
+                throw new ArgumentException("There's no piece at the selected position.");
+            }
+
+            piece.Move(fromRow, fromColumn, toRow, toColumn, this);
+        }
+
+        //row, column - position that is threatened by opponent's piece
+        internal bool CanAttackPosition(PlayerColor color, int row, int column)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    var piece = _pieces[i, j];
+
+
+                    if (piece != null && piece.Color == color)
+                    {
+                        var moves = piece.GetMoves(i, j, this, true);
+
+                        foreach (var move in moves)
+                        {
+                            if (move.Row == row && move.Column == column)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

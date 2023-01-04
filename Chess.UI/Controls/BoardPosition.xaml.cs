@@ -51,7 +51,7 @@ namespace Chess.UI.Controls
 
                 if (_isHighlighted)
                 {
-                    BorderBrush = Brushes.Red;
+                    BorderBrush = Brushes.ForestGreen;
                     BorderThickness = new Thickness(3, 3, 3, 3);
                 }
                 else
